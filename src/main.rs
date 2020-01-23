@@ -1,23 +1,18 @@
-use rusoto_s3::{ListObjectsV2Request, S3Client, S3};
+use rusoto_s3::{ListObjectsV2Request, S3Client, S3, GetObjectRequest};
 use rusoto_core::Region;
+use futures::TryStreamExt;
+use bytes::BytesMut;
 
-pub async fn bucket_obj_bytes() {
-    let region = Region::default();
-    let s3 = S3Client::new(region);
-    let bucket= "umccr-misc-temp".to_string();
-    let prefix = "htsget".to_string();
-    let _obj_bai = "htsnexus_test_NA12878.bam.bai".to_string();
-    let _obj_bam = "htsnexus_test_NA12878.bam".to_string();
-
+pub async fn list_objs(client: S3Client, bucket: String, prefix: String) {
     let list_obj_req = ListObjectsV2Request {
-        bucket: bucket.clone(),
+        bucket,
         prefix: Some(prefix),
         ..ListObjectsV2Request::default()
     };
 
     println!("Request: {:?}", list_obj_req);
 
-    let objects = s3
+    let objects = client
         .list_objects_v2(list_obj_req)
         .await
         .unwrap()
@@ -27,40 +22,38 @@ pub async fn bucket_obj_bytes() {
         .collect::<Vec<_>>();
 
     println!("Result: {:?}", objects);
+}
 
-//    let contents = objects.into_iter().map(move |object| {
-//        let key = object.key.unwrap_or_default();
-//        println!("{}", key);
-//
-//        s3.get_object(GetObjectRequest {
-//            bucket: bucket.clone(),
-//            key,
-//            ..GetObjectRequest::default()
-//        }).await
-//            .map_err(Error::from)
-//            .and_then(|obj| {
-//                read_to_end(
-//                    GzDecoder::new(obj.body.unwrap().into_async_read()),
-//                    Vec::new(),
-//                )
-//                    .map(|(_, bytes)| Request::from_bytes(bytes).unwrap_or_default())
-//                    .map_err(Error::from)
-//            })
-//    });
-//    let mut rt = tokio::runtime::Runtime::new().unwrap();
-//    let results = rt.block_on(future::join_all(contents));
-//    for line in results
-//        .unwrap_or_default()
-//        .into_iter()
-//        .flatten()
-//        .collect::<Vec<_>>()
-//    {
-//        println!("{:#?}", line);
-//    }
+pub async fn bucket_obj_bytes(client: S3Client, bucket: String, _prefix: String, object: String) {
+    let get_req = GetObjectRequest {
+        bucket,
+        key: object,
+        ..Default::default()
+    };
 
+    let result = client
+        .get_object(get_req)
+        .await
+        .expect("Couldn't GET object");
+    println!("get object result: {:#?}", result);
+
+    let stream = result.body.unwrap();
+    let body = stream.map_ok(|b| BytesMut::from(&b[..])).try_concat().await.unwrap();
+
+    assert!(body.len() > 0);
+    dbg!(body);
 }
 
 #[tokio::main]
 async fn main() {
-    let _bytes = bucket_obj_bytes().await;
+    let region = Region::default();
+    let s3 = S3Client::new(region);
+    let bucket= "umccr-misc-temp".to_string();
+    let prefix = "htsget".to_string();
+    let obj_test = "htsget/test.txt".to_string();
+    let _obj_bai = "htsnexus_test_NA12878.bam.bai".to_string();
+    let _obj_bam = "htsnexus_test_NA12878.bam".to_string();
+
+    //let _objects = list_objs(s3, bucket, prefix).await;
+    let _bytes = bucket_obj_bytes(s3, bucket, prefix, obj_test).await;
 }
