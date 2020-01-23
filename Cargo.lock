@@ -423,18 +423,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "htsget-s3"
-version = "0.1.0"
-dependencies = [
- "bytes 0.5.3",
- "futures",
- "rusoto_core",
- "rusoto_s3",
- "tokio",
- "tokio-io",
-]
-
-[[package]]
 name = "http"
 version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -914,6 +902,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "rusoto-s3-async-await"
+version = "0.1.0"
+dependencies = [
+ "bytes 0.5.3",
+ "futures",
+ "rusoto_core",
+ "rusoto_s3",
+ "tokio",
+ "tokio-io",
+]
+
+[[package]]
 name = "rusoto_core"
 version = "0.43.0"
 source = "git+https://github.com/bcmcmill/rusoto?branch=async_await#6365d2cc9c5c3c98a6ef455275ac50772f49dc19"
@@ -1093,9 +1093,9 @@ dependencies = [
 
 [[package]]
 name = "serde_json"
-version = "1.0.44"
+version = "1.0.45"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "48c575e0cc52bdd09b47f330f646cf59afc586e9c4e3ccd6fc1f625b8ea1dad7"
+checksum = "eab8f15f15d6c41a154c1b128a22f2dfabe350ef53c40953d84e36155c91192b"
 dependencies = [
  "itoa",
  "ryu",

@@ -1,5 +1,5 @@
 [package]
-name = "htsget-s3"
+name = "rusoto-s3-async-await"
 version = "0.1.0"
 authors = ["Roman Valls Guimera <brainstorm@nopcode.org>"]
 edition = "2018"
