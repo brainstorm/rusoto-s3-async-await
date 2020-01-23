@@ -12,3 +12,4 @@ rusoto_s3 = { version = "0.43.0", git = "https://github.com/bcmcmill/rusoto", br
 tokio = "0.2.10"
 tokio-io = "0.2.0-alpha.6"
 futures = "0.3.1"
+bytes = "0.5.3"

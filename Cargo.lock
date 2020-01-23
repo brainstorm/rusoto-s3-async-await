@@ -426,6 +426,7 @@ dependencies = [
 name = "htsget-s3"
 version = "0.1.0"
 dependencies = [
+ "bytes 0.5.3",
  "futures",
  "rusoto_core",
  "rusoto_s3",
