@@ -1,0 +1,14 @@
+[package]
+name = "htsget-s3"
+version = "0.1.0"
+authors = ["Roman Valls Guimera <brainstorm@nopcode.org>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+rusoto_core = { version = "0.43.0", git = "https://github.com/bcmcmill/rusoto", branch = "async_await" }
+rusoto_s3 = { version = "0.43.0", git = "https://github.com/bcmcmill/rusoto", branch = "async_await" }
+tokio = "0.2.10"
+tokio-io = "0.2.0-alpha.6"
+futures = "0.3.1"
