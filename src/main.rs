@@ -35,7 +35,6 @@ pub async fn bucket_obj_bytes(client: S3Client, bucket: String, _prefix: String,
         .get_object(get_req)
         .await
         .expect("Couldn't GET object");
-    println!("get object result: {:#?}", result);
 
     let stream = result.body.unwrap();
     let body = stream.map_ok(|b| BytesMut::from(&b[..])).try_concat().await.unwrap();
