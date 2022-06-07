@@ -2,6 +2,7 @@ use rusoto_s3::{ListObjectsV2Request, S3Client, S3, GetObjectRequest};
 use rusoto_core::Region;
 use futures::TryStreamExt;
 use bytes::BytesMut;
+use tokio;
 
 pub async fn list_objs(client: S3Client, bucket: String, prefix: String) {
     let list_obj_req = ListObjectsV2Request {
