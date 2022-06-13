@@ -9,7 +9,7 @@ edition = "2018"
 [dependencies]
 rusoto_core = { version = "0.43.0", git = "https://github.com/bcmcmill/rusoto", branch = "async_await" }
 rusoto_s3 = { version = "0.43.0", git = "https://github.com/bcmcmill/rusoto", branch = "async_await" }
-tokio = "0.2"
+tokio = { version = "1.19", features = ["macros", "rt-multi-thread"] }
 tokio-io = "0.1"
 futures = "0.3.1"
 bytes = "0.5.3"
